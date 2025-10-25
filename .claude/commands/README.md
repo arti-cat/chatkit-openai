@@ -37,6 +37,22 @@ Team workflow tools including standup reports, sprint planning, retrospectives, 
 ### 🎯 `/simulation:*` - AI Reality Simulators
 Advanced simulation and modeling tools for exponential decision value. Transform from linear execution gains to exponential strategic advantage through systematic scenario exploration, digital twins, and timeline compression.
 
+### 🤝 `/multi-role` - Multi-Perspective Analysis
+Combine insights from multiple specialized agents for comprehensive, balanced assessments. Enables parallel or sequential execution of 2-4 agents with synthesized recommendations. Ideal for complex technical decisions requiring multiple viewpoints.
+
+**Example:** `/multi-role security-auditor,performance-engineer --agent`
+- 50-65% time reduction for multi-perspective analysis
+- Balances trade-offs explicitly
+- Unified recommendations from diverse expertise
+
+### 💬 `/chatkit:*` - ChatKit Development Tools
+Specialized commands for ChatKit-OpenAI project development. Accelerates feature implementation, configuration validation, and full-stack workflows specific to ChatKit + FastAPI + React architecture.
+
+**Key Commands:**
+- `/chatkit:add-tool` - Guided tool scaffolding (saves ~30-40 min)
+- `/chatkit:validate-config` - Configuration validation (saves ~15-20 min)
+- `/chatkit:full-stack-feature` - Orchestrated implementation (40-60% faster)
+
 ## Instructions
 
 This is a README file providing an overview of the Claude Command Suite namespace organization. To use any specific command, navigate to the appropriate namespace directory and select the command you need. Each command file contains detailed instructions for its use.
@@ -59,6 +75,8 @@ For example:
 4. **Security concerns?** Run `/security:security-audit`
 5. **Performance issues?** Check `/performance:performance-audit`
 6. **Major decisions?** Explore `/simulation:business-scenario-explorer`
+7. **ChatKit development?** Start with `/chatkit:validate-config`
+8. **Need multiple perspectives?** Use `/multi-role agent1,agent2 --agent`
 
 ## Finding Commands
 

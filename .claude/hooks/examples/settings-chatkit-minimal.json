@@ -1,0 +1,23 @@
+{
+  "hooks": {
+    "pre-commit": {
+      "chatkit-env-validate": {
+        "command": ".claude/hooks/scripts/chatkit-env-validator.sh",
+        "description": "Validate ChatKit environment variables before commit",
+        "blocking": true
+      }
+    },
+    "post-edit": {
+      "python-lint": {
+        "command": "if [[ \"$FILE_PATH\" =~ \\.py$ ]] && [[ \"$FILE_PATH\" =~ ^(backend|examples).*/.*\\.py$ ]]; then (cd \"${FILE_PATH%/*/*}\" && uv run ruff check . --fix) || echo '⚠ Python linting completed'; fi",
+        "description": "Lint Python backend files",
+        "blocking": false
+      },
+      "typescript-lint": {
+        "command": "if [[ \"$FILE_PATH\" =~ \\.(ts|tsx)$ ]] && [[ \"$FILE_PATH\" =~ ^(frontend|examples).*/src.*\\.(ts|tsx)$ ]]; then (cd \"${FILE_PATH%/*/*}\" && npm run lint 2>/dev/null) || echo '⚠ TypeScript linting completed'; fi",
+        "description": "Lint TypeScript frontend files",
+        "blocking": false
+      }
+    }
+  }
+}

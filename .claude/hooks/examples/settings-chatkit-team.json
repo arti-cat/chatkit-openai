@@ -1,0 +1,61 @@
+{
+  "hooks": {
+    "pre-edit": {
+      "chatkit-config-check": {
+        "command": ".claude/hooks/scripts/chatkit-config-validator.sh \"$FILE_PATH\"",
+        "description": "Validate ChatKit configuration before editing",
+        "blocking": false
+      }
+    },
+    "post-edit": {
+      "python-format": {
+        "command": "if [[ \"$FILE_PATH\" =~ ^(backend|examples).*/app/.*\\.py$ ]]; then (cd \"${FILE_PATH%/*/*}\" && uv run ruff format \"$FILE_PATH\") || true; fi",
+        "description": "Auto-format Python code for consistency",
+        "blocking": false
+      },
+      "python-lint": {
+        "command": "if [[ \"$FILE_PATH\" =~ ^(backend|examples).*/app/.*\\.py$ ]]; then (cd \"${FILE_PATH%/*/*}\" && uv run ruff check \"$FILE_PATH\") || echo '⚠ Linting issues found'; fi",
+        "description": "Lint Python code to standards",
+        "blocking": false
+      },
+      "typescript-format": {
+        "command": "if [[ \"$FILE_PATH\" =~ ^(frontend|examples).*/src.*\\.(ts|tsx)$ ]]; then (cd \"${FILE_PATH%/*/*}\" && npx prettier --write \"$FILE_PATH\" 2>/dev/null) || true; fi",
+        "description": "Auto-format TypeScript code for consistency",
+        "blocking": false
+      },
+      "typescript-lint": {
+        "command": "if [[ \"$FILE_PATH\" =~ ^(frontend|examples).*/src.*\\.(ts|tsx)$ ]]; then (cd \"${FILE_PATH%/*/*}\" && npm run lint 2>/dev/null) || echo '⚠ Linting issues found'; fi",
+        "description": "Lint TypeScript code to standards",
+        "blocking": false
+      }
+    },
+    "pre-commit": {
+      "chatkit-env-validate": {
+        "command": ".claude/hooks/scripts/chatkit-env-validator.sh",
+        "description": "Validate ChatKit environment variables",
+        "blocking": true,
+        "blockingMessage": "ChatKit environment validation failed. Check configuration."
+      },
+      "port-conflict-check": {
+        "command": ".claude/hooks/scripts/port-conflict-detector.sh",
+        "description": "Check for port conflicts in development environment",
+        "blocking": false
+      },
+      "domain-allowlist-check": {
+        "command": ".claude/hooks/scripts/domain-allowlist-validator.sh",
+        "description": "Validate domain configuration for deployment",
+        "blocking": false
+      },
+      "python-full-check": {
+        "command": "cd backend && uv run ruff format . && uv run ruff check . && uv run mypy app/ --incremental",
+        "description": "Comprehensive Python validation",
+        "blocking": false
+      },
+      "typescript-full-check": {
+        "command": "cd frontend && npm run lint",
+        "description": "Comprehensive TypeScript validation",
+        "blocking": false
+      }
+    }
+  }
+}

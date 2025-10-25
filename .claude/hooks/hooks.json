@@ -1,0 +1,39 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 .claude/hooks/scripts/bash-validator.py"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "sh .claude/hooks/scripts/format-and-lint.sh"
+          },
+          {
+            "type": "command",
+            "command": "python3 .claude/hooks/scripts/typescript-check.py"
+          }
+        ]
+      },
+      {
+        "matcher": "Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "sh .claude/hooks/scripts/format-and-lint.sh"
+          }
+        ]
+      }
+    ]
+  }
+}

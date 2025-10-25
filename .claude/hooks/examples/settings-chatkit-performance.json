@@ -1,0 +1,43 @@
+{
+  "hooks": {
+    "post-edit": {
+      "python-lint-fast": {
+        "command": "if [[ \"$FILE_PATH\" =~ ^backend/app/.*\\.py$ ]]; then (cd backend && uv run ruff check \"$FILE_PATH\" --fix) || echo '⚠ Linting completed'; fi",
+        "description": "Quick Python linting on edited file only",
+        "blocking": false
+      },
+      "typescript-lint-fast": {
+        "command": "if [[ \"$FILE_PATH\" =~ ^frontend/src.*\\.(ts|tsx)$ ]]; then (cd frontend && npx eslint \"$FILE_PATH\" --fix 2>/dev/null) || echo '⚠ Linting completed'; fi",
+        "description": "Quick TypeScript linting on edited file only",
+        "blocking": false
+      }
+    },
+    "pre-commit": {
+      "chatkit-env-validate": {
+        "command": ".claude/hooks/scripts/chatkit-env-validator.sh",
+        "description": "Validate ChatKit environment variables",
+        "blocking": true
+      },
+      "port-conflict-check": {
+        "command": ".claude/hooks/scripts/port-conflict-detector.sh",
+        "description": "Detect port conflicts",
+        "blocking": false
+      },
+      "python-full-lint": {
+        "command": "cd backend && uv run ruff check . --fix",
+        "description": "Full Python linting before commit",
+        "blocking": false
+      },
+      "python-type-check": {
+        "command": "cd backend && uv run mypy app/ --incremental",
+        "description": "Type check backend before commit",
+        "blocking": false
+      },
+      "typescript-full-lint": {
+        "command": "cd frontend && npm run lint",
+        "description": "Full TypeScript linting before commit",
+        "blocking": false
+      }
+    }
+  }
+}

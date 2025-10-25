@@ -1,0 +1,45 @@
+{
+  "hooks": {
+    "pre-edit": {
+      "chatkit-config-check": {
+        "command": ".claude/hooks/scripts/chatkit-config-validator.sh \"$FILE_PATH\"",
+        "description": "Validate ChatKit configuration before editing",
+        "blocking": false
+      }
+    },
+    "post-edit": {
+      "python-format-lint": {
+        "command": "if [[ \"$FILE_PATH\" =~ \\.py$ ]] && [[ \"$FILE_PATH\" =~ ^(backend|examples).*/.*\\.py$ ]]; then (cd \"${FILE_PATH%/*/*}\" && uv run ruff format . && uv run ruff check . --fix) || echo '⚠ Python formatting/linting completed'; fi",
+        "description": "Format and lint Python files with ruff",
+        "blocking": false
+      },
+      "python-type-check": {
+        "command": "if [[ \"$FILE_PATH\" =~ ^backend/app/.*\\.py$ ]]; then (cd backend && uv run mypy app/ --incremental) || echo '⚠ Type checking completed with warnings'; fi",
+        "description": "Type check Python backend with mypy",
+        "blocking": false
+      },
+      "typescript-lint": {
+        "command": "if [[ \"$FILE_PATH\" =~ \\.(ts|tsx)$ ]] && [[ \"$FILE_PATH\" =~ ^(frontend|examples).*/src.*\\.(ts|tsx)$ ]]; then (cd \"${FILE_PATH%/*/*}\" && npm run lint 2>/dev/null) || echo '⚠ TypeScript linting completed'; fi",
+        "description": "Lint TypeScript files with ESLint",
+        "blocking": false
+      }
+    },
+    "pre-commit": {
+      "chatkit-env-validate": {
+        "command": ".claude/hooks/scripts/chatkit-env-validator.sh",
+        "description": "Validate ChatKit environment variables",
+        "blocking": true
+      },
+      "port-conflict-check": {
+        "command": ".claude/hooks/scripts/port-conflict-detector.sh",
+        "description": "Detect port conflicts before commit",
+        "blocking": false
+      },
+      "domain-allowlist-check": {
+        "command": ".claude/hooks/scripts/domain-allowlist-validator.sh",
+        "description": "Check domain allowlist configuration",
+        "blocking": false
+      }
+    }
+  }
+}
